@@ -1,18 +1,23 @@
 import de.bsz.assethub.model.Asset;
+import de.bsz.assethub.model.AssetReport;
 import de.bsz.assethub.model.Monitor;
 import de.bsz.assethub.model.Notebook;
 import de.bsz.assethub.model.Printer;
 import de.bsz.assethub.model.Server;
+import de.bsz.assethub.model.Tablet;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Main {
 
     public static void main(String[] args) {
         List<Asset> assets = new ArrayList<>();
+        Set<Asset> uniqueAssets = new HashSet<>();
 
         assets.add(new Notebook(
                 "NB-001",
@@ -92,11 +97,64 @@ public class Main {
                 32.0
         ));
 
+        assets.add(new Tablet(
+                "TAB-001",
+                "Apple iPad Air",
+                LocalDate.of(2025, 2, 14),
+                new BigDecimal("799.00"),
+                "Eisenach",
+                256
+        ));
+
+        assets.add(new Tablet(
+                "TAB-002",
+                "Samsung Galaxy Tab S10",
+                LocalDate.of(2024, 10, 3),
+                new BigDecimal("949.00"),
+                "Erfurt",
+                512
+        ));
+
+        System.out.println("Inventarliste:");
+
         for (Asset asset : assets) {
-            System.out.println(asset);
-            System.out.println("Age: " + asset.ageInYears() + " years");
             System.out.println(asset.getInventoryLine());
-            System.out.println();
         }
+
+        AssetReport report = new AssetReport();
+
+        System.out.println(
+                "\nGesamtrestwert: "
+                        + report.totalResidualValue(assets)
+                        + " EUR"
+        );
+
+        System.out.println("\nNach Restwert absteigend sortiert:");
+
+        report.sortedByResidualValue(assets)
+                .forEach(asset ->
+                        System.out.println(asset.getInventoryLine())
+                );
+
+        Asset original = assets.get(0);
+
+        Asset notebookWithSameInventoryNumber = new Notebook(
+                "NB-001",
+                "Lenovo ThinkPad T14",
+                LocalDate.of(2023, 4, 12),
+                new BigDecimal("1499.99"),
+                "Eisenach",
+                16,
+                "PF3X9K2"
+        );
+
+        uniqueAssets.add(original);
+
+        boolean duplicateWasAdded = uniqueAssets.add(notebookWithSameInventoryNumber);
+
+        System.out.println(
+                "\nZweites Objekt mit NB-001 aufgenommen: "
+                        + duplicateWasAdded
+        );
     }
 }

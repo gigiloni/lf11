@@ -30,6 +30,7 @@ public class Printer extends Asset {
                 tonerType,
                 "Toner type must not be null"
         );
+
         this.colorCapable = colorCapable;
     }
 
@@ -50,6 +51,11 @@ public class Printer extends Asset {
 
     public void setColorCapable(boolean colorCapable) {
         this.colorCapable = colorCapable;
+    }
+
+    @Override
+    public BigDecimal calculateResidualValue() {
+        return calculateLinearResidualValue(5);
     }
 
     @Override

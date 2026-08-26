@@ -46,6 +46,11 @@ public class Server extends Asset {
     }
 
     @Override
+    public BigDecimal calculateResidualValue() {
+        return calculateLinearResidualValue(7);
+    }
+
+    @Override
     public String toString() {
         return "Server{"
                 + "asset=" + super.toString()

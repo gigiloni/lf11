@@ -53,6 +53,11 @@ public class Notebook extends Asset {
     }
 
     @Override
+    public BigDecimal calculateResidualValue() {
+        return calculateLinearResidualValue(3);
+    }
+
+    @Override
     public String toString() {
         return "Notebook{"
                 + "asset=" + super.toString()

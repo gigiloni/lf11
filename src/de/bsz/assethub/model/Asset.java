@@ -1,6 +1,7 @@
 package de.bsz.assethub.model;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Objects;
@@ -34,24 +35,25 @@ public abstract class Asset {
 
         this.inventoryNumber = Objects.requireNonNull(
                 inventoryNumber,
-                "Inventory number must not be null");
+                "Inventory number must not be null"
+        );
 
         this.description = Objects.requireNonNull(
                 description,
-                "Description must not be null");
+                "Description must not be null"
+        );
 
         this.purchaseDate = Objects.requireNonNull(
                 purchaseDate,
-                "Purchase date must not be null");
-
-        this.purchasePrice = Objects.requireNonNull(
-                purchasePrice,
-                "Purchase price must not be null"
+                "Purchase date must not be null"
         );
+
+        this.purchasePrice = validatePurchasePrice(purchasePrice);
 
         this.location = Objects.requireNonNull(
                 location,
-                "Location must not be null");
+                "Location must not be null"
+        );
     }
 
     public String getInventoryNumber() {
@@ -63,7 +65,10 @@ public abstract class Asset {
     }
 
     public void setDescription(String description) {
-        this.description = Objects.requireNonNull(description);
+        this.description = Objects.requireNonNull(
+                description,
+                "Description must not be null"
+        );
     }
 
     public LocalDate getPurchaseDate() {
@@ -71,7 +76,10 @@ public abstract class Asset {
     }
 
     public void setPurchaseDate(LocalDate purchaseDate) {
-        this.purchaseDate = Objects.requireNonNull(purchaseDate);
+        this.purchaseDate = Objects.requireNonNull(
+                purchaseDate,
+                "Purchase date must not be null"
+        );
     }
 
     public BigDecimal getPurchasePrice() {
@@ -79,7 +87,7 @@ public abstract class Asset {
     }
 
     public void setPurchasePrice(BigDecimal purchasePrice) {
-        this.purchasePrice = purchasePrice;
+        this.purchasePrice = validatePurchasePrice(purchasePrice);
     }
 
     public String getLocation() {
@@ -87,7 +95,10 @@ public abstract class Asset {
     }
 
     public void setLocation(String location) {
-        this.location = Objects.requireNonNull(location);
+        this.location = Objects.requireNonNull(
+                location,
+                "Location must not be null"
+        );
     }
 
     /**
@@ -97,6 +108,35 @@ public abstract class Asset {
      */
     public int ageInYears() {
         return Period.between(purchaseDate, LocalDate.now()).getYears();
+    }
+
+    public abstract BigDecimal calculateResidualValue();
+
+    protected BigDecimal calculateLinearResidualValue(int usefulLifeYears) {
+        int remainingYears = Math.max(0, usefulLifeYears - ageInYears());
+
+        return purchasePrice
+                .multiply(BigDecimal.valueOf(remainingYears))
+                .divide(
+                        BigDecimal.valueOf(usefulLifeYears),
+                        2,
+                        RoundingMode.HALF_UP
+                );
+    }
+
+    private static BigDecimal validatePurchasePrice(BigDecimal purchasePrice) {
+        BigDecimal validatedPrice = Objects.requireNonNull(
+                purchasePrice,
+                "Purchase price must not be null"
+        );
+
+        if (validatedPrice.signum() < 0) {
+            throw new IllegalArgumentException(
+                    "Purchase price must not be negative"
+            );
+        }
+
+        return validatedPrice;
     }
 
     /**

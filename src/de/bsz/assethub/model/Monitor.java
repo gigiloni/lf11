@@ -35,6 +35,11 @@ public class Monitor extends Asset {
     }
 
     @Override
+    public BigDecimal calculateResidualValue() {
+        return calculateLinearResidualValue(5);
+    }
+
+    @Override
     public String toString() {
         return "Monitor{"
                 + "asset=" + super.toString()

@@ -141,6 +141,24 @@ public abstract class Asset {
         return validatedPrice;
     }
 
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+
+        if (!(other instanceof Asset asset)) {
+            return false;
+        }
+
+        return inventoryNumber.equals(asset.inventoryNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return inventoryNumber.hashCode();
+    }
+
     /**
      * Override toString methode to provide better class status representation.
      *

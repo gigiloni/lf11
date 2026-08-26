@@ -95,6 +95,7 @@ public class Main {
         for (Asset asset : assets) {
             System.out.println(asset);
             System.out.println("Age: " + asset.ageInYears() + " years");
+            System.out.println(asset.getInventoryLine());
             System.out.println();
         }
     }

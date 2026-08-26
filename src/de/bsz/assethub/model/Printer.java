@@ -60,6 +60,11 @@ public class Printer extends Asset {
     }
 
     @Override
+    public String getTypeName() {
+        return "Printer";
+    }
+
+    @Override
     public String getInventoryLine() {
         return String.format(
                 Locale.GERMANY,

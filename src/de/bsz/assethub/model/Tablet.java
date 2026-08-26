@@ -53,6 +53,11 @@ public class Tablet extends Asset {
     }
 
     @Override
+    public String getTypeName() {
+        return "Tablet";
+    }
+
+    @Override
     public String toString() {
         return "Tablet{"
                 + "asset=" + super.toString()

@@ -72,6 +72,11 @@ public class Notebook extends Asset {
     }
 
     @Override
+    public String getTypeName() {
+        return "Notebook";
+    }
+
+    @Override
     public String toString() {
         return "Notebook{"
                 + "asset=" + super.toString()

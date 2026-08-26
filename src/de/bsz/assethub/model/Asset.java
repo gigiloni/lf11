@@ -110,6 +110,8 @@ public abstract class Asset {
         return Period.between(purchaseDate, LocalDate.now()).getYears();
     }
 
+    public abstract String getTypeName();
+
     public abstract BigDecimal calculateResidualValue();
 
     public abstract String getInventoryLine();

@@ -21,4 +21,14 @@ public class AssetReport {
                 )
                 .collect(Collectors.toList());
     }
+
+    public void printInventoryList(List<Asset> assets) {
+        for (Asset asset : assets) {
+            System.out.printf(
+                    "%-12s | %s%n",
+                    asset.getTypeName(),
+                    asset.getInventoryLine()
+            );
+        }
+    }
 }

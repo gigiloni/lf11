@@ -53,6 +53,11 @@ public class Monitor extends Asset {
     }
 
     @Override
+    public String getTypeName() {
+        return "Monitor";
+    }
+
+    @Override
     public String toString() {
         return "Monitor{"
                 + "asset=" + super.toString()

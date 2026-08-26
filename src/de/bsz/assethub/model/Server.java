@@ -65,6 +65,11 @@ public class Server extends Asset {
     }
 
     @Override
+    public String getTypeName() {
+        return "Server";
+    }
+
+    @Override
     public String toString() {
         return "Server{"
                 + "asset=" + super.toString()

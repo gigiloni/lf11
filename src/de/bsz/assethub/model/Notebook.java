@@ -2,6 +2,7 @@ package de.bsz.assethub.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Locale;
 import java.util.Objects;
 
 public class Notebook extends Asset {
@@ -55,6 +56,19 @@ public class Notebook extends Asset {
     @Override
     public BigDecimal calculateResidualValue() {
         return calculateLinearResidualValue(3);
+    }
+
+    @Override
+    public String getInventoryLine() {
+        return String.format(
+                Locale.GERMANY,
+                "%-8s | %-25s | %3d GB RAM | SN: %-12s | Restwert: %10.2f EUR",
+                getInventoryNumber(),
+                getDescription(),
+                ram,
+                serialNumber,
+                calculateResidualValue()
+        );
     }
 
     @Override

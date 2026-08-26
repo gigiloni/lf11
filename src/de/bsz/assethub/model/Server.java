@@ -2,6 +2,7 @@ package de.bsz.assethub.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Locale;
 
 public class Server extends Asset {
 
@@ -48,6 +49,19 @@ public class Server extends Asset {
     @Override
     public BigDecimal calculateResidualValue() {
         return calculateLinearResidualValue(7);
+    }
+
+    @Override
+    public String getInventoryLine() {
+        return String.format(
+                Locale.GERMANY,
+                "%-8s | %-25s | %2d HE | %2d CPUs | Restwert: %10.2f EUR",
+                getInventoryNumber(),
+                getDescription(),
+                rackUnits,
+                cpuCount,
+                calculateResidualValue()
+        );
     }
 
     @Override

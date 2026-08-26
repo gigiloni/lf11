@@ -2,6 +2,7 @@ package de.bsz.assethub.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Locale;
 
 public class Tablet extends Asset {
 
@@ -37,6 +38,18 @@ public class Tablet extends Asset {
     @Override
     public BigDecimal calculateResidualValue() {
         return calculateLinearResidualValue(3);
+    }
+
+    @Override
+    public String getInventoryLine() {
+        return String.format(
+                Locale.GERMANY,
+                "%-8s | %-25s | %4d GB Speicher | Restwert: %10.2f EUR",
+                getInventoryNumber(),
+                getDescription(),
+                storageCapacityGb,
+                calculateResidualValue()
+        );
     }
 
     @Override

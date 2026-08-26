@@ -2,6 +2,7 @@ package de.bsz.assethub.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Locale;
 import java.util.Objects;
 
 public class Printer extends Asset {
@@ -56,6 +57,19 @@ public class Printer extends Asset {
     @Override
     public BigDecimal calculateResidualValue() {
         return calculateLinearResidualValue(5);
+    }
+
+    @Override
+    public String getInventoryLine() {
+        return String.format(
+                Locale.GERMANY,
+                "%-8s | %-25s | Toner %-10s | %-5s | Restwert: %10.2f EUR",
+                getInventoryNumber(),
+                getDescription(),
+                tonerType,
+                colorCapable ? "Farbe" : "s/w",
+                calculateResidualValue()
+        );
     }
 
     @Override

@@ -112,6 +112,8 @@ public abstract class Asset {
 
     public abstract BigDecimal calculateResidualValue();
 
+    public abstract String getInventoryLine();
+
     protected BigDecimal calculateLinearResidualValue(int usefulLifeYears) {
         int remainingYears = Math.max(0, usefulLifeYears - ageInYears());
 

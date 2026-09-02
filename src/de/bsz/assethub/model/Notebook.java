@@ -4,11 +4,14 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Optional;
 
-public class Notebook extends Asset {
+public class Notebook extends Asset implements Loanable, Maintainable {
 
     private int ram;
     private String serialNumber;
+    private final LoanStatus loanStatus = new LoanStatus();
+    private LocalDate lastMaintenanceDate;
 
     public Notebook(
             String inventoryNumber,
@@ -18,6 +21,28 @@ public class Notebook extends Asset {
             String location,
             int ram,
             String serialNumber) {
+
+        this(
+                inventoryNumber,
+                description,
+                purchaseDate,
+                purchasePrice,
+                location,
+                ram,
+                serialNumber,
+                purchaseDate
+        );
+    }
+
+    public Notebook(
+            String inventoryNumber,
+            String description,
+            LocalDate purchaseDate,
+            BigDecimal purchasePrice,
+            String location,
+            int ram,
+            String serialNumber,
+            LocalDate lastMaintenanceDate) {
 
         super(
                 inventoryNumber,
@@ -31,6 +56,10 @@ public class Notebook extends Asset {
         this.serialNumber = Objects.requireNonNull(
                 serialNumber,
                 "Serial number must not be null"
+        );
+        this.lastMaintenanceDate = Objects.requireNonNull(
+                lastMaintenanceDate,
+                "Last maintenance date must not be null"
         );
     }
 
@@ -51,6 +80,48 @@ public class Notebook extends Asset {
                 serialNumber,
                 "Serial number must not be null"
         );
+    }
+
+    @Override
+    public boolean isAvailable() {
+        return loanStatus.isAvailable();
+    }
+
+    @Override
+    public void loanTo(Employee employee, int days) {
+        loanStatus.loanTo(employee, days, LocalDate.now());
+    }
+
+    @Override
+    public void returnAsset() {
+        loanStatus.returnAsset();
+    }
+
+    @Override
+    public Optional<Employee> getCurrentUser() {
+        return loanStatus.getCurrentUser();
+    }
+
+    @Override
+    public Optional<LocalDate> getDueDate() {
+        return loanStatus.getDueDate();
+    }
+
+    @Override
+    public LocalDate getLastMaintenanceDate() {
+        return lastMaintenanceDate;
+    }
+
+    public void setLastMaintenanceDate(LocalDate lastMaintenanceDate) {
+        this.lastMaintenanceDate = Objects.requireNonNull(
+                lastMaintenanceDate,
+                "Last maintenance date must not be null"
+        );
+    }
+
+    @Override
+    public int getMaintenanceIntervalInMonths() {
+        return 12;
     }
 
     @Override

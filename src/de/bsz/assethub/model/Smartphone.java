@@ -47,13 +47,9 @@ public class Smartphone extends Asset {
         this.imei = validateImei(imei);
     }
 
-    public int usefulLifeInYears() {
-        return 2;
-    }
-
     @Override
     public BigDecimal calculateResidualValue() {
-        return calculateLinearResidualValue(usefulLifeInYears());
+        return calculateLinearResidualValue(2);
     }
 
     @Override

@@ -3,10 +3,12 @@ package de.bsz.assethub.model;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Locale;
+import java.util.Optional;
 
-public class Monitor extends Asset {
+public class Monitor extends Asset implements Loanable {
 
     private double screenSizeInches;
+    private final LoanStatus loanStatus = new LoanStatus();
 
     public Monitor(
             String inventoryNumber,
@@ -33,6 +35,31 @@ public class Monitor extends Asset {
 
     public void setScreenSizeInches(double screenSizeInches) {
         this.screenSizeInches = screenSizeInches;
+    }
+
+    @Override
+    public boolean isAvailable() {
+        return loanStatus.isAvailable();
+    }
+
+    @Override
+    public void loanTo(Employee employee, int days) {
+        loanStatus.loanTo(employee, days, LocalDate.now());
+    }
+
+    @Override
+    public void returnAsset() {
+        loanStatus.returnAsset();
+    }
+
+    @Override
+    public Optional<Employee> getCurrentUser() {
+        return loanStatus.getCurrentUser();
+    }
+
+    @Override
+    public Optional<LocalDate> getDueDate() {
+        return loanStatus.getDueDate();
     }
 
     @Override

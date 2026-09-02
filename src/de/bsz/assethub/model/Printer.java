@@ -5,10 +5,11 @@ import java.time.LocalDate;
 import java.util.Locale;
 import java.util.Objects;
 
-public class Printer extends Asset {
+public class Printer extends Asset implements Maintainable {
 
     private String tonerType;
     private boolean colorCapable;
+    private LocalDate lastMaintenanceDate;
 
     public Printer(
             String inventoryNumber,
@@ -18,6 +19,28 @@ public class Printer extends Asset {
             String location,
             String tonerType,
             boolean colorCapable) {
+
+        this(
+                inventoryNumber,
+                description,
+                purchaseDate,
+                purchasePrice,
+                location,
+                tonerType,
+                colorCapable,
+                purchaseDate
+        );
+    }
+
+    public Printer(
+            String inventoryNumber,
+            String description,
+            LocalDate purchaseDate,
+            BigDecimal purchasePrice,
+            String location,
+            String tonerType,
+            boolean colorCapable,
+            LocalDate lastMaintenanceDate) {
 
         super(
                 inventoryNumber,
@@ -33,6 +56,10 @@ public class Printer extends Asset {
         );
 
         this.colorCapable = colorCapable;
+        this.lastMaintenanceDate = Objects.requireNonNull(
+                lastMaintenanceDate,
+                "Last maintenance date must not be null"
+        );
     }
 
     public String getTonerType() {
@@ -52,6 +79,23 @@ public class Printer extends Asset {
 
     public void setColorCapable(boolean colorCapable) {
         this.colorCapable = colorCapable;
+    }
+
+    @Override
+    public LocalDate getLastMaintenanceDate() {
+        return lastMaintenanceDate;
+    }
+
+    public void setLastMaintenanceDate(LocalDate lastMaintenanceDate) {
+        this.lastMaintenanceDate = Objects.requireNonNull(
+                lastMaintenanceDate,
+                "Last maintenance date must not be null"
+        );
+    }
+
+    @Override
+    public int getMaintenanceIntervalInMonths() {
+        return 6;
     }
 
     @Override
